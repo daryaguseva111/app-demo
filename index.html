@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#09090b" />
+    <title>Интерактивный прототип приложения</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="prototype" class="prototype" aria-label="Интерактивный прототип мобильного приложения">
+      <section id="stage" class="stage" aria-live="off">
+        <img id="screen" class="screen" alt="Экран мобильного приложения" draggable="false" />
+        <div id="hotspots" class="hotspots" aria-label="Активные области экрана"></div>
+        <p id="error" class="error" hidden>Не удалось загрузить экран. Обновите страницу.</p>
+      </section>
+      <p id="status" class="visually-hidden" aria-live="polite"></p>
+    </main>
+    <noscript>Для работы интерактивного прототипа необходимо включить JavaScript.</noscript>
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
