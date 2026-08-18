@@ -25,9 +25,20 @@
   const getSlide = (number) => data.slides[number - 1];
 
   const loadAssetPack = async () => {
-    const response = await fetch("./screens.pack");
-    if (!response.ok) throw new Error(`Asset pack request failed: ${response.status}`);
-    const bytes = await response.arrayBuffer();
+    const partNames = Array.from({ length: 9 }, (_, index) => `./screens.pack.${String(index).padStart(2, "0")}`);
+    const parts = await Promise.all(partNames.map(async (partName) => {
+      const response = await fetch(partName);
+      if (!response.ok) throw new Error(`Asset pack request failed: ${partName} (${response.status})`);
+      return new Uint8Array(await response.arrayBuffer());
+    }));
+    const totalLength = parts.reduce((total, part) => total + part.length, 0);
+    const combined = new Uint8Array(totalLength);
+    let writeOffset = 0;
+    parts.forEach((part) => {
+      combined.set(part, writeOffset);
+      writeOffset += part.length;
+    });
+    const bytes = combined.buffer;
     const view = new DataView(bytes);
     const headerLength = view.getUint32(0, true);
     const headerBytes = new Uint8Array(bytes, 4, headerLength);
