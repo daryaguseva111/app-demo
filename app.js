@@ -86,6 +86,10 @@
       button.style.width = `${hotspot.width}%`;
       button.style.height = `${hotspot.height}%`;
       button.style.zIndex = String(index + 1);
+      if (hotspot.caption) {
+        button.classList.add("hotspot--caption");
+        button.textContent = hotspot.caption;
+      }
       button.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
