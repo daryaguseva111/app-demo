@@ -5,6 +5,8 @@
   const root = document.getElementById("prototype");
   const stage = document.getElementById("stage");
   const screen = document.getElementById("screen");
+  const screenLayer = document.getElementById("screen-layer");
+  const screenOverlay = document.getElementById("screen-overlay");
   const hotspotLayer = document.getElementById("hotspots");
   const status = document.getElementById("status");
   const error = document.getElementById("error");
@@ -67,8 +69,13 @@
   const prefetchTargets = (slide) => {
     const uniqueTargets = new Set(slide.hotspots.map((hotspot) => hotspot.target));
     uniqueTargets.forEach((target) => {
+      const targetSlide = getSlide(target);
       const image = new Image();
-      image.src = getImageSource(getSlide(target).image);
+      image.src = getImageSource(targetSlide.image);
+      if (targetSlide.overlayImage) {
+        const overlayImage = new Image();
+        overlayImage.src = targetSlide.overlayImage;
+      }
     });
   };
 
@@ -107,6 +114,17 @@
     error.hidden = true;
     screen.alt = `Экран мобильного приложения ${number}`;
     screen.src = getImageSource(slide.image);
+    if (slide.overlayImage && slide.overlay) {
+      screenLayer.hidden = false;
+      screenLayer.style.left = `${slide.overlay.x}%`;
+      screenLayer.style.top = `${slide.overlay.y}%`;
+      screenLayer.style.width = `${slide.overlay.width}%`;
+      screenLayer.style.height = `${slide.overlay.height}%`;
+      screenOverlay.src = slide.overlayImage;
+    } else {
+      screenLayer.hidden = true;
+      screenOverlay.removeAttribute("src");
+    }
     renderHotspots(slide);
     prefetchTargets(slide);
     if (announce) status.textContent = `Открыт экран ${number}`;
@@ -128,6 +146,10 @@
   };
 
   screen.addEventListener("error", () => {
+    error.hidden = false;
+  });
+
+  screenOverlay.addEventListener("error", () => {
     error.hidden = false;
   });
 

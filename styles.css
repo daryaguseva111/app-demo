@@ -62,6 +62,43 @@ body {
   opacity: 0;
 }
 
+.screen-layer {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 2.15cqw;
+  background: #f8f7fc;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 170ms ease;
+}
+
+.screen-layer[hidden] {
+  display: none;
+}
+
+.stage.is-changing .screen-layer {
+  opacity: 0;
+}
+
+.screen-overlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.screen-notch {
+  position: absolute;
+  top: -0.1%;
+  left: 28.5%;
+  width: 43%;
+  height: 4.4%;
+  border-radius: 0 0 1.15cqw 1.15cqw;
+  background: #050505;
+}
+
 .hotspots {
   position: absolute;
   inset: 0;
@@ -146,7 +183,8 @@ noscript {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .screen {
+  .screen,
+  .screen-layer {
     transition: none;
   }
 }
